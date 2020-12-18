@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>login page</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='main.js'></script>
+    <style>
+        nav{
+            border-bottom: 1px solid rgb(226, 221, 221);
+            background-color: rgb(39, 117, 189);
+        }
+        .logoutbtn{
+            float: right;
+            margin-right: 20px;
+        }
+        .logoutbtn a{
+            text-decoration: none;
+            color: black;
+        }
+        .welcome{
+            color: white;
+        }
+        ul{
+            margin-left:45%;
+        }
+        th{
+            background-color: rgb(160, 160, 160);
+        }
+        .staffhead{
+            padding: 0 25px 0 25px;
+        }
+        .addstaff, .addstudent{
+            float: left;
+            width:"40%";
+            border-radius: 10px;
+            border:none;
+            outline:none;
+        }
+        .modal, .modal2 {
+            display: none;
+            position: fixed;
+            z-index: 1; 
+            padding-top: 100px;
+            left: 0;
+            top: 0;
+            width: 500px; 
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0); 
+            background-color: rgba(0,0,0,0.4); 
+        }   
+        .modal-content{
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        }
+        .close{
+        color: #aaaaaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        }
+        .close:hover,
+        .close:focus{
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+        }
+        input[type="text"], input[type="number"]{
+            width:348px;
+        }
+        option{
+            width:327px;
+        }
+        input[type="submit"]{
+            width:348px;
+        }
+        form{
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <table width="100%">
+            <tr>
+                <td>
+                    <h4 class="welcome">Welcome, {{user}}</h4>
+                </td>
+                <td>
+                    <h3 align="center" class="welcome">{{clg.name}}</h3>
+                </td>
+                <td>
+                    <button class="logoutbtn"><a href="/logout/">logout</a></button>
+                </td>
+            </tr>
+        </table>
+    </nav><br>
+    <center>
+        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" id="pills-staff-tab" data-toggle="pill" href="#pills-staff" role="tab" aria-controls="pills-staff" aria-selected="true">Staff</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="pills-student-tab" data-toggle="pill" href="#pills-student" role="tab" aria-controls="pills-student" aria-selected="false">Student</a>
+            </li>
+          </ul><br><br>
+          <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="pills-staff" role="tabpanel" aria-labelledby="pills-staff-tab">
+                <table>
+                    <tr>
+                        <th class="staffhead">Id</th>
+                        <th class="staffhead">Name</th>
+                        <th class="staffhead">Designation</th>
+                        <th class="staffhead">Department</th>
+                    </tr>
+                    {% for x in staff %}
+                    <tr>
+                        <td>{{x.staff_id}}</td>
+                        <td>{{x.name}}</td>
+                        <td>{{x.designation}}
+                        </td>
+                        <td>{{x.department}}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    <tr><td>&nbsp;</td></tr>
+                    <tr>
+                        <td><button class="addstaff bg-success text-white" onclick="myBtn()">Add Staff</button></td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    
+                </table>
+
+                <div id="myModal" class="modal">
+
+                    <div class="modal-content">
+                      <span class="close" onclick="close1()">&times;</span>
+                      <form action="/addstaff/" method="POST">
+                        {% csrf_token %}
+                          <input type="number" name="staffid" placeholder="enter staff id"><br><br>
+                          <input type="text" name="staffname" placeholder="enter name"><br><br>
+                          <select name="designation" id="designation">
+                                <option selected>--select designation--</option>
+                                {% for i in des %}
+                                <option value={{i}}>{{i}}</option>
+                                {% endfor %}
+                          </select><br><br>
+                          <select name="department" id="department">
+                            <option selected>--select department--</option>
+                                {% for i in department %}
+                                <option value={{i}}>{{i}}</option>
+                                {% endfor %}
+                          </select><br><br>
+                          <input type="submit" class="bg-success text-white" value="create"><br><br>
+                      </form>
+                    </div>
+                  
+                  </div>
+                
+            </div>
+
+
+            <div class="tab-pane fade" id="pills-student" role="tabpanel" aria-labelledby="pills-student-tab">
+                <table>
+                    <tr>
+                        <th class="staffhead">RegisterNo</th>
+                        <th class="staffhead">Name</th>
+                        <th class="staffhead">Section</th>
+                        <th class="staffhead">Department</th>
+                        <th class="staffhead">Semester</th>
+                        <th class="staffhead">Batch</th>
+                    </tr>
+                    {% for x in student %}
+                    <tr>
+                        <td>{{x.register_no}}</td>
+                        <td>{{x.name}}</td>
+                        <td align="center">{{x.section}}
+                        </td>
+                        <td>{{x.department}}
+                        </td>
+                        <td align="center">{{x.sem}}</td>
+                        <td>{{x.batch}}</td>
+                    </tr>
+                    {% endfor %}
+                    <tr><td>&nbsp;</td></tr>
+                    <tr>
+                        <td><button class="addstudent bg-success text-white" onclick="myBtn2()">Add Student</button></td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    
+                </table>
+
+                <div id="myModal2" class="modal2">
+
+                    <div class="modal-content">
+                      <span class="close" onclick="close2()">&times;</span>
+                      <form action="/addstudent/" method="POST">
+                        {% csrf_token %}
+                          <input type="text" name="registerno" placeholder="enter register number"><br><br>
+                          <input type="text" name="studentname" placeholder="enter student name"><br><br>
+                          <select name="section" id="section">
+                            <option selected>--select section--</option>
+                                {% for i in sec %}
+                                <option value={{i}}>{{i}}</option>
+                                {% endfor %}
+                          </select><br><br>
+                          <select name="department" id="department">
+                                <option selected>--select department--</option>
+                                {% for i in department %}
+                                <option value={{i}}>{{i}}</option>
+                                {% endfor %}
+                          </select><br><br>
+                          <select name="sem" id="sem">
+                            <option selected>--select semester--</option>
+                                {% for i in sem %}
+                                <option value={{i}}>{{i}}</option>
+                                {% endfor %}
+                          </select><br><br>
+                          <select name="batch" id="batch">
+                            <option selected>--select batch--</option>
+                            {% for i in batch %}
+                            <option value={{i}}>{{i}}</option>
+                            {% endfor %}
+                          </select><br><br>
+                          <input type="submit" value="create" class="bg-success text-white"><br><br>
+                      </form>
+                    </div>
+                  
+                  </div>
+                
+            </div>
+          </div>
+    </center>
+
+    <script>
+
+        var span = document.getElementsByClassName("close")[0];
+
+        function myBtn() {
+            document.getElementById("myModal").style.display = "block";
+        }
+
+        function close1(){
+            document.getElementById("myModal").style.display = "none";
+        }
+
+        function close2(){
+            document.getElementById("myModal2").style.display = "none";
+        }
+
+        function myBtn2() {
+            document.getElementById("myModal2").style.display = "block";
+        }
+
+        </script>
+
+</body>
+</html>

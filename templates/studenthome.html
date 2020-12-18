@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>login page</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='main.js'></script>
+    <style>
+        nav{
+            border-bottom: 1px solid rgb(226, 221, 221);
+            background-color: rgb(39, 117, 189);
+        }
+        .logoutbtn{
+            float: right;
+            margin-right: 20px;
+        }
+        .logoutbtn a{
+            text-decoration: none;
+            color: black;
+        }
+        .welcome{
+            color: white;
+        }
+        ul{
+            margin-left:45%;
+        }
+        td{
+            color: rgb(59, 59, 59);
+        }
+        td b{
+            color: black;
+        }
+        th{
+            background-color: rgb(160, 160, 160);
+        }
+        .studhead{
+            padding: 0 25px 0 25px;
+        }
+    </style>
+</head>
+<body>
+    <!-- <form action="/" method="POST">
+        {% csrf_token %}
+        <input type="number" name="num1" placeholder="enter number 1">
+        <input type="number" name="num2" placeholder="enter number 2">
+        <input type="submit" value="add">
+    </form><br>
+    {{result}} -->
+    <nav>
+        <table width="100%">
+            <tr>
+                <td>
+                    <h4 class="welcome">Welcome, {{user}}</h4>
+                </td>
+                <td>
+                    <h3 align="center" class="welcome">{{clg.name}}</h3>
+                </td>
+                <td>
+                    <button class="logoutbtn"><a href="/logout/">logout</a></button>
+                </td>
+            </tr>
+        </table>
+    </nav><br>
+    <center>
+        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="true">Profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="pills-mark-tab" data-toggle="pill" href="#pills-mark" role="tab" aria-controls="pills-mark" aria-selected="false">Exam Result</a>
+            </li>
+          </ul><br><br>
+          <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                <table>
+                    <tr>
+                        <td><b>Register No. : </b></td>
+                        <td>{{stud.register_no}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Student Name :</b></td>
+                        <td>{{stud.name}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Department   :</b></td>
+                        <td>{{stud.department}}</td>
+                    </tr>
+                </table>
+            </div>
+
+
+            <div class="tab-pane fade" id="pills-mark" role="tabpanel" aria-labelledby="pills-mark-tab">
+                <table>
+                    <tr>
+                        <th class="studhead">Semester</th>
+                        <th class="studhead">RegisterNo</th>
+                        <th class="studhead">Subject</th>
+                        <th class="studhead">Department</th>
+                        <th class="studhead">Mark</th>
+                    </tr>
+                    <tr>
+                        <td>{{mark.sem}}</td>
+                        <td>{{mark.student.register_no}}</td>
+                        <td>{{mark.subject.name}}</td>
+                        <td>{{mark.department.department}}</td>
+                        <td>{{mark.mark}}</td>
+                    </tr>
+                </table>
+            </div>
+          </div>
+    </center>
+</body>
+</html>

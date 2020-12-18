@@ -10,10 +10,10 @@
     <style>
         a{
             text-decoration: none;
-            color: #fff;
+            color:rgb(128, 0, 0);
         }
         a:hover{
-            color: rgb(34, 34, 34);
+            color: rgb(212, 11, 11);
         }
         .div{
             margin-top: 80px;
@@ -21,6 +21,12 @@
             border: 1px solid rgb(230, 226, 226);
             border-radius: 10px;
             background-color: #fff;
+            border-top: 2px solid #4DD0E1;
+        }
+        form{
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            padding: 10px 0 10px 10px;
+            border-radius: 10px;
         }
         .stafflogin{
             padding: 15px;
@@ -46,38 +52,46 @@
             border: none;
             outline: none;
             border-bottom: 1px solid rgb(58, 55, 55);
-            background-color: rgb(247, 246, 250);
-            color: rgb(68, 67, 67);
+            background-color: transparent;
+            color: rgb(97, 97, 97);
         }
         input[type="submit"]{
             width: 110px;
             border-radius: 10px;
-            border: none;
+            border: 2px solid rgb(34, 44, 90);
             outline: none;
-            background-color: rgb(34, 177, 82);
-            color: #fff;
+            color: rgb(34, 44, 90);
+            background-color: transparent;
             cursor: pointer;
         }
         input[type="submit"]:hover{
-            background-color: white;
-            border: 1px solid rgb(34, 177, 82);
-            color: rgb(34, 34, 34);
+            border: 2px solid rgb(1, 158, 54);
+            color: rgb(1, 158, 54);
         }
         button{
             width: 110px;
             border-radius: 10px;
-            background-color: rgb(214, 102, 102);
-            color:white;
+            background-color:transparent;
+            border: 2px solid rgb(128, 0, 0);
+            outline: none;
         }
         button:hover{
-            background-color: white;
-            border: 1px solid rgb(214, 102, 102);
+            color: rgb(212, 11, 11);
+            border: 2px solid rgb(212, 11, 11);
         }
         table{
-            background-color: rgb(247, 246, 250); 
+            /* background-color: rgb(247, 246, 250);  */
+            /* background-color:rgb(91, 192, 222); */
+            background-color: #4DD0E1;
         }
         h5{
             color: rgb(48, 47, 47);
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            width: 40%;
+            padding: 3px;
+            border-radius: 0 0 10px 10px;
+            margin-left: 25%;
+            margin-top: -18px;
         }
     </style>
 </head>
@@ -88,6 +102,7 @@
         <table>
             <tr>
                 <td>
+                    <!-- staff login ui -->
                     <div class="stafflogin">
                         <h5>Staff login</h5>
                         <form action="/" method="POST">
@@ -100,6 +115,7 @@
                     </div>
                 </td>
                 <td>
+                    <!-- student login ui -->
                     <div class="studentlogin">
                         <h5>Student login</h5>
                         <form action="/studentlogin/" method="POST">

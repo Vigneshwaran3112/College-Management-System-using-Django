@@ -133,7 +133,7 @@ class Mark(models.Model):
         return self.student.name
 
     class Meta(object):
-        ordering = ['id']
+        ordering = ['sem']
 
     def __str__(self):
         return '{}, {}'.format(self.department, self.student.register_no)

@@ -19,10 +19,13 @@
         .logoutbtn{
             float: right;
             margin-right: 20px;
+            background-color: transparent;
+            border-radius:10px;
+            border: 2px solid white
         }
         .logoutbtn a{
             text-decoration: none;
-            color: black;
+            color: white;
         }
         .welcome{
             color: white;
@@ -42,16 +45,17 @@
         .studhead{
             padding: 0 25px 0 25px;
         }
+        .tab-pane{
+            width:450px;
+            padding:10px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            border-radius: 10px;
+        }
     </style>
 </head>
 <body>
-    <!-- <form action="/" method="POST">
-        {% csrf_token %}
-        <input type="number" name="num1" placeholder="enter number 1">
-        <input type="number" name="num2" placeholder="enter number 2">
-        <input type="submit" value="add">
-    </form><br>
-    {{result}} -->
+
+<!-- top navigation bar -->
     <nav>
         <table width="100%">
             <tr>
@@ -67,34 +71,39 @@
             </tr>
         </table>
     </nav><br>
+
     <center>
+
+<!-- nav ui -->
         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
             <li class="nav-item">
-              <a class="nav-link active" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="true">Profile</a>
+              <a class="nav-link active" style="border-radius:15px 0 0 15px;" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="true">Profile</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" id="pills-mark-tab" data-toggle="pill" href="#pills-mark" role="tab" aria-controls="pills-mark" aria-selected="false">Exam Result</a>
+              <a class="nav-link" style="border-radius:0 15px 15px 0;" id="pills-mark-tab" data-toggle="pill" href="#pills-mark" role="tab" aria-controls="pills-mark" aria-selected="false">Exam Result</a>
             </li>
           </ul><br><br>
+
+<!-- student profile -->
           <div class="tab-content" id="pills-tabContent">
             <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
                 <table>
                     <tr>
-                        <td><b>Register No. : </b></td>
+                        <td><b>Register No.&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp; </b></td>
                         <td>{{stud.register_no}}</td>
                     </tr>
                     <tr>
-                        <td><b>Student Name :</b></td>
+                        <td><b>Student Name :&nbsp;&nbsp;&nbsp;</b></td>
                         <td>{{stud.name}}</td>
                     </tr>
                     <tr>
-                        <td><b>Department   :</b></td>
+                        <td><b>Department&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;</b></td>
                         <td>{{stud.department}}</td>
                     </tr>
                 </table>
             </div>
 
-
+<!-- student mark list -->
             <div class="tab-pane fade" id="pills-mark" role="tabpanel" aria-labelledby="pills-mark-tab">
                 <table>
                     <tr>
@@ -105,11 +114,11 @@
                         <th class="studhead">Mark</th>
                     </tr>
                     <tr>
-                        <td>{{mark.sem}}</td>
+                        <td align="center">{{mark.sem}}</td>
                         <td>{{mark.student.register_no}}</td>
                         <td>{{mark.subject.name}}</td>
                         <td>{{mark.department.department}}</td>
-                        <td>{{mark.mark}}</td>
+                        <td align="center">{{mark.mark}}</td>
                     </tr>
                 </table>
             </div>

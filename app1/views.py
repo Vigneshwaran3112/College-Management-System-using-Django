@@ -36,6 +36,7 @@ def Authentication(request):
 def login(request):
 
     if request.method == 'POST':
+        global username, password
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(username=username, password=password)
@@ -45,15 +46,17 @@ def login(request):
             sec = Section.objects.all()
             sem = Semester.objects.all()
             batch = Batch.objects.all()
-            designation = Designation.objects.values_list('designation')
-            des = []
-            for i in range(len(designation)):
-                des.append(designation[i][0])
+            des = Designation.objects.all()
+            depart = Department.objects.all()
+            # designation = Designation.objects.values_list('designation')
+            # des = []
+            # for i in range(len(designation)):
+            #     des.append(designation[i][0])
 
-            department = Department.objects.values_list('department')
-            depart = []
-            for i in range(len(department)):
-                depart.append(department[i][0])
+            # department = Department.objects.values_list('department')
+            # depart = []
+            # for i in range(len(department)):
+            #     depart.append(department[i][0])
             return render(request, 'home.html', {'user':user, 'clg':clg, 'des':des, 'department':depart, 'staff':staff, 'student':student, 'sem':sem, 'batch':batch, 'sec':sec})
     return render(request, 'login.html', {'clg':clg})
 
@@ -61,14 +64,17 @@ def logout(request):
     return redirect('/')
 
 def home(request):
-    if request.method == 'POST':
-        dt = Department.objects.values_list('department')
-        d = []
-        for i in range(len(dt)):
-            d.append(dt[i][0])
-        print(d)
-        return render(request, 'home.html', {'clg':clg})
-    return render(request, 'home.html', {'clg':clg})
+    user = authenticate(username=username, password=password)
+    if user.is_authenticated:
+        staff = Staff.objects.all()
+        student = Student.objects.all()
+        sec = Section.objects.all()
+        sem = Semester.objects.all()
+        batch = Batch.objects.all()
+        des = Designation.objects.all()
+        depart = Department.objects.all()
+        return render(request, 'home.html', {'user':user, 'clg':clg, 'des':des, 'department':depart, 'staff':staff, 'student':student, 'sem':sem, 'batch':batch, 'sec':sec})
+    return render(request, 'login.html', {'clg':clg})
 
 def studentlogin(request):
     # d = Department.objects.group_set.all()
@@ -88,7 +94,7 @@ def studentlogin(request):
                     print(stud.name)
                     print(stud.department)
                     return render(request, 'studenthome.html', {'user':name, 'clg':clg, 'stud':stud, 'mark':mark})
-        return render(request, 'login.html')
+    return render(request, 'login.html')
 
 def addstaff(request):
     if request.method == 'POST':
@@ -96,10 +102,11 @@ def addstaff(request):
         staffname = request.POST.get('staffname')
         designation = request.POST.get('designation')
         department = request.POST.get('department')
-
+        designation = Designation.objects.get(id=designation)
+        department = Department.objects.get(id=department)
         sf = Staff.objects.create(staff_id=staffid,name=staffname,designation=designation,department=department)
-        st.save()
-    return render(request, 'home.html')
+        sf.save()
+    return redirect('/home/')
 
 def addstudent(request):
     if request.method == 'POST':
@@ -109,7 +116,81 @@ def addstudent(request):
         department = request.POST.get('department')
         sem = request.POST.get('sem')
         batch = request.POST.get('batch')
-
+        section = Section.objects.get(id=section)
+        department = Department.objects.get(id=department)
+        sem = Semester.objects.get(id=sem)
+        batch = Batch.objects.get(id=batch)
         st = Student.objects.create(register_no=registerno, name=studentname, section=section, department=department,sem=sem, batch=batch)
         st.save()
-    return render(request, 'home.html')
+    return redirect('/home/')
+
+def deletestaff(request, id):
+    st = ''
+    st = Staff.objects.get(id=id)
+    st.delete()
+    return redirect('/home/')
+
+def editstaff(request, id):
+    editsf = ''
+    editsf = Staff.objects.get(id=id)
+    staff = 'block'
+    student = 'none'
+    des = Designation.objects.all()
+    depart = Department.objects.all()
+    return render(request, 'update.html', {'user':username, 'clg':clg, 'editstaff':editsf, 'staffpage':staff, 'studentpage':student, 'des':des, 'department':depart})
+
+def updatestaff(request, id):
+    if request.method == 'POST':
+        staff_id = request.POST.get('staffid')
+        name = request.POST.get('staffname')
+        designation = request.POST.get('designation')
+        department = request.POST.get('department')
+        designation = Designation.objects.get(id=designation)
+        department = Department.objects.get(id=department)
+        sf = Staff.objects.get(id=id)
+        sf.staff_id = staff_id
+        sf.name = name
+        sf.designation = designation
+        sf.department = department
+        sf.save()
+        return redirect('/home/')
+
+def deletestudent(request, id):
+    st = ''
+    st = Student.objects.get(id=id)
+    st.delete()
+    return redirect('/home/')
+
+def editstudent(request, id):
+    editst = ''
+    editst = Student.objects.get(id=id)
+    staff = 'none'
+    student = 'block'
+    sec = Section.objects.all()
+    sem = Semester.objects.all()
+    batch = Batch.objects.all()
+    depart = Department.objects.all()
+    return render(request, 'update.html', {'user':username, 'clg':clg, 'editstudent':editst, 'staffpage':staff, 'studentpage':student, 'department':depart, 'sem':sem, 'batch':batch, 'sec':sec})
+
+def updatestudent(request, id):
+    if request.method == 'POST':
+        registerno = request.POST.get('registerno')
+        name = request.POST.get('studentname')
+        section = request.POST.get('section')
+        department = request.POST.get('department')
+        sem = request.POST.get('sem')
+        batch = request.POST.get('batch')
+        section = Section.objects.get(id=section)
+        department = Department.objects.get(id=department)
+        sem = Semester.objects.get(id=sem)
+        batch = Batch.objects.get(id=batch)
+        st = Student.objects.get(id=id)
+        st.register_no = registerno
+        st.name = name
+        st.section = section
+        st.department = department
+        st.sem = sem
+        st.batch = batch
+        st.save()
+        return redirect('/home/')
+

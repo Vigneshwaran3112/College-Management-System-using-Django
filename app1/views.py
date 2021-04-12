@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
-from .models import College, Batch, Semester, Department, Section, Designation, Staff, Student, Subject, Mark, Rank
+from .models import *
 
 global clg
 clg = College.objects.get(id=1)
@@ -25,7 +25,7 @@ def Authentication(request):
                 users = User.objects.create_user(USERNAME_FIELD,first_name=first_name,last_name=last_name,email=email,password=password)
                 users.is_staff = True
                 users.save()
-                return render(request, 'home.html', {'user':users})
+                return redirect('/login/')
         except:
             user= User.objects.get(username=user_name)
             msg = 'Username is already exist...'
@@ -48,16 +48,9 @@ def login(request):
             batch = Batch.objects.all()
             des = Designation.objects.all()
             depart = Department.objects.all()
-            # designation = Designation.objects.values_list('designation')
-            # des = []
-            # for i in range(len(designation)):
-            #     des.append(designation[i][0])
-
-            # department = Department.objects.values_list('department')
-            # depart = []
-            # for i in range(len(department)):
-            #     depart.append(department[i][0])
-            return render(request, 'home.html', {'user':user, 'clg':clg, 'des':des, 'department':depart, 'staff':staff, 'student':student, 'sem':sem, 'batch':batch, 'sec':sec})
+            subject = Subject.objects.all()
+            mark = Mark.objects.all()
+            return render(request, 'home.html', {'user':user, 'clg':clg, 'des':des,'mark':mark, 'subject':subject,'department':depart, 'staff':staff, 'student':student, 'sem':sem, 'batch':batch, 'sec':sec})
     return render(request, 'login.html', {'clg':clg})
 
 def logout(request):
@@ -73,7 +66,9 @@ def home(request):
         batch = Batch.objects.all()
         des = Designation.objects.all()
         depart = Department.objects.all()
-        return render(request, 'home.html', {'user':user, 'clg':clg, 'des':des, 'department':depart, 'staff':staff, 'student':student, 'sem':sem, 'batch':batch, 'sec':sec})
+        subject = Subject.objects.all()
+        mark = Mark.objects.all()
+        return render(request, 'home.html', {'user':user, 'clg':clg, 'des':des,'mark':mark,'subject':subject, 'department':depart, 'staff':staff, 'student':student, 'sem':sem, 'batch':batch, 'sec':sec})
     return render(request, 'login.html', {'clg':clg})
 
 def studentlogin(request):
@@ -83,18 +78,51 @@ def studentlogin(request):
         name = request.POST.get('studentname')
         s = Student.objects.all()
         m = Mark.objects.all()
+        r = Rank.objects.all()
         for i in range(5, len(s)+5):
             stud = Student.objects.get(id=i)
             if stud.register_no == registerno:
                 m = Mark.objects.all()
                 for j in range(1, len(m)+1):
                     mark = Mark.objects.get(student=stud)
+                for k in range(1, len(r)+1):
+                    rank = Rank.objects.get(student=stud)
                 if stud.name == name:
-                    print(stud.register_no)
-                    print(stud.name)
-                    print(stud.department)
-                    return render(request, 'studenthome.html', {'user':name, 'clg':clg, 'stud':stud, 'mark':mark})
+                    return render(request, 'studenthome.html', {'user':name, 'clg':clg, 'stud':stud, 'mark':mark, 'rank':rank})
     return render(request, 'login.html')
+
+def editmark(request, id):
+    if request.method == 'POST':
+        sem = request.POST.get('sem')
+        registerno = request.POST.get('registerno')
+        subject = request.POST.get('subject')
+        department = request.POST.get('department')
+        mark = request.POST.get('mark')
+        department = Department.objects.get(id=department)
+        sem = Semester.objects.get(id=sem)
+        subject = Subject.objects.get(id=subject)
+        m = Mark.objects.get(id=id)
+        m.sem = sem
+        m.register_no = registerno
+        m.subject = subject
+        m.department = department
+        m.mark = mark
+        m.save()
+        return redirect('/home/')
+
+def addmark(request):
+    if request.method == 'POST':
+        sem = request.POST.get('sem')
+        registerno = request.POST.get('registerno')
+        subject = request.POST.get('subject')
+        department = request.POST.get('department')
+        mark = request.POST.get('mark')
+        department = Department.objects.get(id=department)
+        sem = Semester.objects.get(id=sem)
+        subject = Subject.objects.get(id=subject)
+        m = Mark.objects.create(sem=sem, register_no=registerno,subject=subject, department=department, mark=mark)
+        m.sava()
+        return redirect('/home/')
 
 def addstaff(request):
     if request.method == 'POST':

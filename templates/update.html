@@ -15,7 +15,8 @@
     <style>
         nav{
             border-bottom: 1px solid rgb(226, 221, 221);
-            background-color: rgb(39, 117, 189);
+            /* background-color: rgb(39, 117, 189); */
+            background-image: linear-gradient(to right,rgb(39, 117, 189) , #448AFF);
         }
         .logoutbtn{
             float: right;
@@ -102,22 +103,22 @@
               <input type="number" name="staffid" value="{{editstaff.staff_id}}" placeholder="enter staff id"><br><br>
               <input type="text" name="staffname" value="{{editstaff.name}}" placeholder="enter name"><br><br>
               <select name="designation" id="designation">
+                <option value={{editstaff.designation.id}} selected>{{editstaff.designation}}</option>
                     {% for i in des %}
-                    {% if i.designation == editstaff.designation %}
-                    <option value={{i.id}} selected>{{i.designation}}</option>
-                    {% endif %}
+                    {% if i.id != editstaff.designation.id %}
                     <option value={{i.id}}>{{i.designation}}</option>
+                    {% endif %}
                     {% endfor %}
               </select><br><br>
               <select name="department" id="department">
+                <option value={{editstaff.department.id}} selected>{{editstaff.department}}</option>
                     {% for i in department %}
-                    {% if i.department == editstaff.department %}
-                    <option value={{i.id}} selected>{{i.department}}</option>
-                    {% endif %}
+                    {% if i.id != editstaff.department.id %}
                     <option value={{i.id}}>{{i.department}}</option>
+                    {% endif %}
                     {% endfor %}
               </select><br><br>
-              <input type="submit" class="bg-success text-white" value="create"><br><br>
+              <input type="submit" class="bg-success text-white" value="update"><br><br>
           </form>
         </div><br>
         <a href="/home/"><i style="font-size: 35px; margin-left: 36.5%; cursor:pointer;" class="far fa-arrow-alt-circle-left text-light backicon"></i></a>
@@ -128,41 +129,41 @@
         <div class="modal-content">
           <form action="/updatestudent/{{editstudent.id}}" method="POST">
             {% csrf_token %}
-              <input type="text" name="registerno" value="{{editstudent.register_no}}" placeholder="enter register number"><br><br>
+              <input type="text" name="registerno" value="{{editstudent.register_no}}" placeholder="enter register number" disabled><br><br>
               <input type="text" name="studentname" value="{{editstudent.name}}" placeholder="enter student name"><br><br>
               <select name="section" id="section">
+                <option value={{editstudent.section.id}} selected>{{editstudent.section}}</option>
                     {% for i in sec %}
-                    {% if i.section == editstudent.section %}
-                    <option value={{i.id}} selected>{{i.section}}</option>
-                    {% endif %}
+                    {% if i.id != editstudent.section.id %}
                     <option value={{i.id}}>{{i.section}}</option>
+                    {% endif %}
                     {% endfor %}
               </select><br><br>
               <select name="department" id="department">
+                <option value={{editstudent.department.id}} selected>{{editstudent.department}}</option>
                     {% for i in department %}
-                    {% if i.department == editstudent.department %}
-                    <option value={{i.id}} selected>{{i.department}}</option>
-                    {% endif %}
+                    {% if i.id != editstudent.department.id %}
                     <option value={{i.id}}>{{i.department}}</option>
+                    {% endif %}
                     {% endfor %}
               </select><br><br>
               <select name="sem" id="sem">
+                <option value={{editstudent.sem.id}} selected>{{editstudent.sem}}</option>
                     {% for i in sem %}
-                    {% if i.sem == editstudent.sem %}
-                    <option value={{i.id}} selected>{{i.sem}}</option>
-                    {% endif %}
+                    {% if i.id != editstudent.sem.id %}
                     <option value={{i.id}}>{{i.sem}}</option>
+                    {% endif %}
                     {% endfor %}
               </select><br><br>
               <select name="batch" id="batch">
+                <option value={{editstudent.batch.id}} selected>{{editstudent.batch}}</option>
                 {% for i in batch %}
-                {% if i.batch == editstudent.batch %}
-                <option value={{i.id}} selected>{{i.batch}}</option>
+                {% if i.id != editstudent.batch.id %}
+                <option value={{i.id}}>{{i.year_from}}</option>
                 {% endif %}
-                <option value={{i.id}}>{{i}}</option>
                 {% endfor %}
               </select><br><br>
-              <input type="submit" value="create" class="bg-success text-white"><br><br>
+              <input type="submit" value="update" class="bg-success text-white"><br><br>
           </form>
         </div><br>
         <a class="backicon" href="/home/"><i style="font-size: 35px; margin-left: 36.5%; cursor:pointer;" class="far fa-arrow-alt-circle-left text-light backicon"></i></a>

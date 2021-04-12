@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import College, Batch, Semester, Department, Section, Designation, Staff, Student, Subject, Mark, Rank
+from .models import *
 
 # Register your models here.
 
@@ -8,21 +8,17 @@ admin.site.site_title = "Admin Portal"
 admin.site.index_title = "Welcome to MEC Admin Portal"
 
 
-
 @admin.register(College)
 class CollegeAdmin(admin.ModelAdmin):
     list_display = ('id', 'code', 'name', 'email', 'website')
-    #list_display_links = ('id', 'Code', 'Name', 'Email', 'WebSite')
 
 @admin.register(Batch)
 class BatchAdmin(admin.ModelAdmin):
     list_display = ('id', 'batch_id', 'year_from', 'year_to')
-    #list_display_links = ('id', 'BatchID', 'YearFrom', 'YearTo')
 
 @admin.register(Semester)
 class SemesterAdmin(admin.ModelAdmin):
     list_display = ('id', 'sem')
-    #list_display_links = ('id', 'Sem')
 
 @admin.register(Department)
 class DepartmentAdmin(admin.ModelAdmin):
@@ -32,12 +28,10 @@ class DepartmentAdmin(admin.ModelAdmin):
 @admin.register(Section)
 class SectionAdmin(admin.ModelAdmin):
     list_display = ('id', 'sec_id', 'section')
-    #list_display_links = ('id', 'SecID', 'Section')
 
 @admin.register(Designation)
 class DesignationAdmin(admin.ModelAdmin):
     list_display = ('id', 'designation_id', 'designation')
-    #list_display_links = ('id', 'DesignationId', 'Designation')
 
 @admin.register(Staff)
 class StaffAdmin(admin.ModelAdmin):

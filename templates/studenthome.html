@@ -14,7 +14,8 @@
     <style>
         nav{
             border-bottom: 1px solid rgb(226, 221, 221);
-            background-color: rgb(39, 117, 189);
+            /* background-color: rgb(39, 117, 189); */
+            background-image: linear-gradient(to right,rgb(39, 117, 189) , #448AFF);
         }
         .logoutbtn{
             float: right;
@@ -45,7 +46,7 @@
         .studhead{
             padding: 0 25px 0 25px;
         }
-        .tab-pane{
+        .profile{
             width:450px;
             padding:10px;
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -80,13 +81,16 @@
               <a class="nav-link active" style="border-radius:15px 0 0 15px;" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="true">Profile</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" style="border-radius:0 15px 15px 0;" id="pills-mark-tab" data-toggle="pill" href="#pills-mark" role="tab" aria-controls="pills-mark" aria-selected="false">Exam Result</a>
+              <a class="nav-link" id="pills-mark-tab" data-toggle="pill" href="#pills-mark" role="tab" aria-controls="pills-mark" aria-selected="false">Exam Result</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" style="border-radius:0 15px 15px 0;" id="pills-rank-tab" data-toggle="pill" href="#pills-rank" role="tab" aria-controls="pills-rank" aria-selected="false">Rank</a>
+              </li>
           </ul><br><br>
 
 <!-- student profile -->
           <div class="tab-content" id="pills-tabContent">
-            <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+            <div class="profile tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
                 <table>
                     <tr>
                         <td><b>Register No.&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp; </b></td>
@@ -119,6 +123,24 @@
                         <td>{{mark.subject.name}}</td>
                         <td>{{mark.department.department}}</td>
                         <td align="center">{{mark.mark}}</td>
+                    </tr>
+                </table>
+            </div>
+
+
+            <div class="tab-pane fade show" id="pills-rank" role="tabpanel" aria-labelledby="pills-rank-tab">
+                <table>
+                    <tr>
+                        <th class="studhead">Semester</th>
+                        <th class="studhead">RegisterNo</th>
+                        <th class="studhead">Department</th>
+                        <th class="studhead">CGPA</th>
+                    </tr>
+                    <tr>
+                        <td align="center">{{rank.sem}}</td>
+                        <td>{{rank.student.register_no}}</td>
+                        <td>{{rank.department.department}}</td>
+                        <td align="center">{{rank.cgpa}}</td>
                     </tr>
                 </table>
             </div>

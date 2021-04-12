@@ -15,7 +15,8 @@
     <style>
         nav{
             border-bottom: 1px solid rgb(226, 221, 221);
-            background-color: rgb(39, 117, 189);
+            /* background-color: rgb(39, 117, 189); */
+            background-image: linear-gradient(to right,rgb(39, 117, 189) , #448AFF);
         }
         .logoutbtn{
             float: right;
@@ -47,7 +48,7 @@
             border:none;
             outline:none;
         }
-        .modal, .modal2 {
+        .modal, .modal2, .modal3, .modal4 {
             display: none;
             position: fixed;
             z-index: 1; 
@@ -94,6 +95,72 @@
         .icon{
             padding: 0 10px 0 10px;
         }
+        .clglogo{
+            margin-right: -65px;
+            font-size: 25px;
+            color: white;
+            cursor: pointer;
+        }
+/* clg detials */
+
+        .clgmodal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+            -webkit-animation-name: fadeIn;
+            -webkit-animation-duration: 0.4s;
+            animation-name: fadeIn;
+            animation-duration: 0.4s
+        }
+        .clgmodal-content {
+            position: fixed;
+            bottom: 0;
+            background-color: rgb(39, 117, 189);
+            width: 100%;
+            -webkit-animation-name: slideIn;
+            -webkit-animation-duration: 0.4s;
+            animation-name: slideIn;
+            animation-duration: 0.4s
+        }
+        .clgclose {
+            color: white;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .clgclose:hover,
+        .clgclose:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .clgmodal-body {padding: 2px 16px;}
+        @-webkit-keyframes slideIn {
+            from {bottom: -300px; opacity: 0} 
+            to {bottom: 0; opacity: 1}
+        }
+        @keyframes slideIn {
+            from {bottom: -300px; opacity: 0}
+            to {bottom: 0; opacity: 1}
+        }
+        @-webkit-keyframes fadeIn {
+            from {opacity: 0} 
+            to {opacity: 1}
+        }
+        @keyframes fadeIn {
+            from {opacity: 0} 
+            to {opacity: 1}
+        }
+        h6{
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -109,6 +176,7 @@
                     <h3 align="center" class="welcome">{{clg.name}}</h3>
                 </td>
                 <td>
+                    <a href="#" onclick="clgBtn()"><i class="fas fa-university clglogo"></i></a>
                     <button class="logoutbtn"><a href="/logout/">logout</a></button>
                 </td>
             </tr>
@@ -120,10 +188,13 @@
 <!-- nav ui -->
         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
             <li class="nav-item">
-              <a class="nav-link active" style="border-radius:15px 0 0 15px;" id="pills-staff-tab" data-toggle="pill" href="#pills-staff" role="tab" aria-controls="pills-staff" aria-selected="true">Staff</a>
+              <a class="nav-link active" style="border-radius:20px 0 0 20px;" id="pills-staff-tab" data-toggle="pill" href="#pills-staff" role="tab" aria-controls="pills-staff" aria-selected="true">Staff</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" style="border-radius:0 15px 15px 0;" id="pills-student-tab" data-toggle="pill" href="#pills-student" role="tab" aria-controls="pills-student" aria-selected="false">Student</a>
+              <a class="nav-link" id="pills-student-tab" data-toggle="pill" href="#pills-student" role="tab" aria-controls="pills-student" aria-selected="false">Student</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" style="border-radius:0 20px 20px 0;" id="pills-studentmark-tab" data-toggle="pill" href="#pills-studentmark" role="tab" aria-controls="pills-studentmark" aria-selected="false">Student Marks</a>
             </li>
           </ul><br><br>
 
@@ -258,8 +329,133 @@
                   </div>
                 
             </div>
+
+<!-- student marks -->
+          <div class="tab-pane fade" id="pills-studentmark" role="tabpanel" aria-labelledby="pills-studentmark-tab">
+            <table>
+                <tr>
+                    <th class="staffhead">Semester</th>
+                    <th class="staffhead">RegisterNo</th>
+                    <th class="staffhead">Subject</th>
+                    <th class="staffhead">Department</th>
+                    <th class="staffhead">Mark</th>
+                    <th> </th>
+                    <th> </th>
+                </tr>
+                {% for x in mark %}
+                <tr>
+                    <td align="center">{{x.sem}}</td>
+                    <td>{{x.student.register_no}}</td>
+                    <td>{{x.subject.name}}</td>
+                    <td>{{x.department}}</td>
+                    <td align="center">{{x.mark}}</td>
+                    <td class="icon"><a style="cursor: pointer;" onclick="myBtn3()"><i class="fas fa-user-edit text-dark"></i></a></td>
+                    <!-- <td class="icon"><a href="/deletestudent/{{x.id}}"><i class="fas fa-user-minus text-dark"></i></a></td> -->
+                </tr>
+                <!-- {% endfor %} -->
+                <tr><td>&nbsp;</td></tr>
+                <tr>
+                    <td><button class="addstudent bg-success text-white" onclick="myBtn4()">Add Student</button></td>
+                    <td>&nbsp;</td>
+                </tr>  
+            </table>
+
+            <div id="myModal3" class="modal3">
+                <div class="modal-content">
+                  <span class="close" onclick="close3()">&times;</span>
+                  <i style="font-size:40px; margin-top: 10px; float: left;" class="fas fa-user-plus"></i>
+                  {% for x in mark %}
+                  <form action="/editmark/{{x.id}}" method="POST">
+                    {% csrf_token %}
+                    <select name="sem" id="sem">
+                        <option value={{x.sem.id}} selected>{{x.sem}}</option>
+                            {% for i in sem %}
+                            {% if i.id != x.sem.id %}
+                            <option value={{i.id}}>{{i.sem}}</option>
+                            {% endif %}
+                            {% endfor %}
+                      </select><br><br>
+                      <input type="text" name="registerno" value="{{x.student.register_no}}"><br><br>
+                      <select name="subject" id="subject">
+                        <option value={{x.subject.id}} selected>{{x.subject.name}}</option>
+                            {% for i in subject %}
+                            {% if i.id != x.subject.id %}
+                            <option value={{i.id}}>{{i.name}}</option>
+                            {% endif %}
+                            {% endfor %}
+                      </select><br><br>
+                      <select name="department" id="department">
+                        <option value={{x.department.id}} selected>{{x.department}}</option>
+                            {% for i in department %}
+                            {% if i.id != x.department.id %}
+                            <option value={{i.id}}>{{i.department}}</option>
+                            {% endif %}
+                            {% endfor %}
+                      </select><br><br>
+                      <input type="number" name="mark" value="{{x.mark}}" ><br><br>
+                      <input type="submit" value="update" class="bg-success text-white"><br><br>
+                  </form>
+                  {% endfor %}
+                </div>
+              </div>
+
+              <div id="myModal4" class="modal4">
+                <div class="modal-content">
+                  <span class="close" onclick="close4()">&times;</span>
+                  <i style="font-size:40px; margin-top: 10px; float: left;" class="fas fa-user-plus"></i>
+                  {% for x in mark %}
+                  <form action="/addmark/" method="POST">
+                    {% csrf_token %}
+                    <select name="sem" id="sem">
+                        <option selected>--select semester--</option>
+                            {% for i in sem %}
+                            <option value={{i.id}}>{{i.sem}}</option>
+                            {% endfor %}
+                      </select><br><br>
+                      <input type="text" name="registerno" placeholder="enter registerno"><br><br>
+                      <select name="subject" id="subject">
+                        <option selected>--select section--</option>
+                            {% for i in subject %}
+                            <option value={{i.id}}>{{i.name}}</option>
+                            {% endfor %}
+                      </select><br><br>
+                      <select name="department" id="department">
+                            <option selected>--select department--</option>
+                            {% for i in department %}
+                            <option value={{i.id}}>{{i.department}}</option>
+                            {% endfor %}
+                      </select><br><br>
+                      <input type="number" name="mark" placeholder="enter mark"><br><br>
+                      <input type="submit" value="create" class="bg-success text-white"><br><br>
+                  </form>
+                  {% endfor %}
+                </div>
+              </div>
+          </div>
           </div>
     </center>
+
+    <div id="clgModal" class="clgmodal">
+        <div class="clgmodal-content">
+          <span onclick="clgclose()" class="clgclose">&times;</span>
+          <div class="clgmodal-body">
+            <div class="container-fluid row">
+                <div class="col-1"></div>
+                <div class="col-2">
+                    <i style="font-size: 125px; color: white;" class="fas fa-university"></i>
+                </div>
+                <div class="col-9">
+                    <h6>{{clg.code}}</h6>
+                    <h6>{{clg.name}}</h6>
+                    <h6>{{clg.email}}</h6>
+                    <h6>{{clg.website}}</h6><br>
+                </div>
+            </div>
+          </div>
+          
+        </div>
+      
+      </div>
 
  <!-- staff and student sub model scripts -->
     <script>
@@ -270,6 +466,18 @@
             document.getElementById("myModal").style.display = "block";
         }
 
+        function myBtn2() {
+            document.getElementById("myModal2").style.display = "block";
+        }
+
+        function myBtn3() {
+            document.getElementById("myModal3").style.display = "block";
+        }
+
+        function myBtn4() {
+            document.getElementById("myModal4").style.display = "block";
+        }
+
         function close1(){
             document.getElementById("myModal").style.display = "none";
         }
@@ -278,10 +486,28 @@
             document.getElementById("myModal2").style.display = "none";
         }
 
-        function myBtn2() {
-            document.getElementById("myModal2").style.display = "block";
+        function close3(){
+            document.getElementById("myModal3").style.display = "none";
         }
 
+        function close4(){
+            document.getElementById("myModal4").style.display = "none";
+        }
+
+
+        function clgBtn() {
+            document.getElementById("clgModal").style.display = "block";
+        }
+
+        function clgclose() {
+            document.getElementById("clgModal").style.display = "none";
+        }
+
+        window.onclick = function(event) {
+        if (event.target == document.getElementById("clgModal")) {
+            document.getElementById("clgModal").style.display = "none";
+        }
+        }
         </script>
 
 </body>
